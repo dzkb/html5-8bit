@@ -37,14 +37,6 @@ $(document).ready(function() {
 		// Clear canvas up
 		ctx.fillStyle="#000000";
 		ctx.fillRect(0,0,w,h);
-		for (var i=0;i<w/BLOCK_SIZE;i++)
-		{
-			ctx.drawImage(wall,i*BLOCK_SIZE,BLOCK_SIZE); // Top horizontal wall
-			
-			for (var j=1; j<3; j++)
-				ctx.drawImage(floor,i*BLOCK_SIZE,h-j*BLOCK_SIZE); // Floor // h-a*x, x=block size (eg. 32x32), a=number of blocks to ommit
-			
-		}
 		for (var i=1;i<((h-2*BLOCK_SIZE)/BLOCK_SIZE);i++) // h-a*x, x=block size (eg. 32x32), a=number of blocks to ommit
 		{
 			ctx.drawImage(wall,0,i*BLOCK_SIZE); // Left vertical wall
@@ -54,6 +46,17 @@ $(document).ready(function() {
 		{
 			ctx.drawImage(entrance,((i/4)*w)-(ENTRANCE_W/2),h-2*BLOCK_SIZE-ENTRANCE_H); // Entrances
 		}
+				for (var i=0;i<w/BLOCK_SIZE;i++)
+		{
+			ctx.drawImage(wall,i*BLOCK_SIZE,BLOCK_SIZE); // Top horizontal wall
+			
+			for (var j=1; j<3; j++)
+				ctx.drawImage(floor,i*BLOCK_SIZE,h-j*BLOCK_SIZE); // Floor // h-a*x, x=block size (eg. 32x32), a=number of blocks to ommit
+			
+		}
+		
+		//ctx.drawImage(entrance,((i/4)*w)-(ENTRANCE_W/2),h-2*BLOCK_SIZE-ENTRANCE_H); // Mario's position
+		
 	}
 	
 });
