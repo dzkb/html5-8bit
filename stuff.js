@@ -21,6 +21,9 @@ $(document).ready(function() {
 	// Mario's data
 	var mario_x = BLOCK_SIZE; // snapped to left wall
 	var mario_y = h-3*BLOCK_SIZE; // snapped to floor
+	var move_dir = 0; // 0 - left, 1 - right
+	var moving = false;
+	var blendMove = false;
 	
 	function init(){
 		
@@ -28,11 +31,54 @@ $(document).ready(function() {
 		ctx.fillRect(0,0,w,h);
 		
 		if(typeof game_loop != "undefined") clearInterval(game_loop);
-		game_loop = setInterval(think, 60); // I have no idea what I'm doing...
+		game_loop = setInterval(think, 30); // I have no idea what I'm doing...
 	}
 	init();
-	function think(){ // Logical operations begin here.
+	window.addEventListener('keydown',onKeyDown,true);
+	window.addEventListener('keyup',onKeyUp,true);
 	
+	function onKeyDown(evt){
+		switch (evt.keyCode) {
+			case 39:	{
+							moving = true;
+							move_dir = 1;
+							blendMove = false;
+							break;
+						}
+			case 37: 	{
+							moving = true;
+							move_dir = 0;
+							blendMove = false;							
+							break;
+						}		
+		}
+	}
+	
+	function onKeyUp(evt){
+		switch (evt.keyCode) {
+			case 39:	{
+							moving = false;
+							blendMove = true;
+							break;
+						}
+			case 37: 	{
+							moving = false;
+							blendMove = true;
+							break;
+						}		
+		}
+	}
+	
+	function think(){ // Logical operations begin here.
+		if (moving) {
+			if (move_dir == 0){
+				mario_x = mario_x - 2;
+			}else{
+				mario_x = mario_x + 2;			
+			}
+		}
+
+		
 		paint();
 	}
 	
