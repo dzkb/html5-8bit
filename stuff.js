@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	//Canvas stuff
+	// Canvas stuff
 	var canvas = $("#chooser")[0];
 	var ctx = canvas.getContext("2d");
 	ctx.canvas.width = $(window).width(); // Resize canvas
@@ -8,15 +8,19 @@ $(document).ready(function() {
 	var w = $("#chooser").width();
 	var h = $("#chooser").height();
 	
-	//variables
-	var w_inside = w - 2*BLOCK_SIZE;
-	var h_inside = h - 2*BLOCK_SIZE;
-	
 	
 	// constants
 	var BLOCK_SIZE = 32;
 	var ENTRANCE_W = 64;
 	var ENTRANCE_H = 96;
+	
+	// variables
+	var w_inside = w - 2*BLOCK_SIZE;
+	var h_inside = h - 2*BLOCK_SIZE;
+	
+	// Mario's data
+	var mario_x = BLOCK_SIZE; // snapped to left wall
+	var mario_y = h-3*BLOCK_SIZE; // snapped to floor
 	
 	function init(){
 		
@@ -36,6 +40,8 @@ $(document).ready(function() {
 		// Clear canvas up
 		ctx.fillStyle="#000000";
 		ctx.fillRect(0,0,w,h);
+		
+		// 1. Background
 		for (var i=1;i<((h-2*BLOCK_SIZE)/BLOCK_SIZE);i++) // h-a*x, x=block size (eg. 32x32), a=number of blocks to ommit
 		{
 			ctx.drawImage(wall,0,i*BLOCK_SIZE); // Left vertical wall
@@ -53,8 +59,11 @@ $(document).ready(function() {
 				ctx.drawImage(floor,i*BLOCK_SIZE,h-j*BLOCK_SIZE); // Floor // h-a*x, x=block size (eg. 32x32), a=number of blocks to ommit
 			
 		}
-		
-		ctx.drawImage(tiles, 0, 0, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, h-3*BLOCK_SIZE, 32,32); // Add additional 
+		// 2. TXT & other
+
+
+		// 3. Mario		
+		ctx.drawImage(tiles, 0, 0, BLOCK_SIZE, BLOCK_SIZE, mario_x, mario_y, 32,32); // Drawing Mario
 		
 	}
 	
