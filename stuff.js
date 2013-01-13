@@ -9,7 +9,6 @@ $(document).ready(function() {
 	var h = $("#chooser").height();
 	
 	//variables
-	var wall = document.getElementById("wall");
 	var w_inside = w - 2*BLOCK_SIZE;
 	var h_inside = h - 2*BLOCK_SIZE;
 	
@@ -55,7 +54,7 @@ $(document).ready(function() {
 			
 		}
 		
-		//ctx.drawImage(entrance,((i/4)*w)-(ENTRANCE_W/2),h-2*BLOCK_SIZE-ENTRANCE_H); // Mario's position
+		ctx.drawImage(tiles, 0, 0, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, h-3*BLOCK_SIZE, 32,32); // Add additional 
 		
 	}
 	
