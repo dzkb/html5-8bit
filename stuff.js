@@ -25,13 +25,15 @@ $(document).ready(function() {
 		move_dir: 0, // 0-left, 1-right
 		moving: false,
 		blendMove: false,
+		jumping: false,
 
 		// functions
 		process: function(){
 			// do the controls
 			if ( key_pressed[37] || key_pressed[39] ) { // if pressed left key or right key
-				if (! mario.moving) { // check if mario is already moving
+				if (! mario.jumping) { // check if mario is jumping/falling
 					mario.moving = true; // move mario
+					if ((key_pressed[37] && key_pressed[39])) return; // if pressing both keys, stahp
 					mario.move_dir = key_pressed[37] ? 0 : 1; // choose direction
 					mario.blendMove = false; // dafaq dzkb?
 				}
