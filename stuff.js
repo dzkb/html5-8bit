@@ -22,11 +22,14 @@ $(document).ready(function() {
 		// vars
 		x: BLOCK_SIZE,
 		y: h-3*BLOCK_SIZE,
-		move_dir: 0, // 0-left, 1-right
+		move_dir: -1, // -1=left, 1=right
 		moving: false,
 		blendMove: false,
 		jumping: false,
-
+		mspeed: {
+			x: 0,
+			y: 0
+		},
 		// functions
 		process: function(){
 			// do the controls
@@ -35,6 +38,7 @@ $(document).ready(function() {
 					mario.moving = true; // move mario
 					if ((key_pressed[37] && key_pressed[39])) return; // if pressing both keys, stahp
 					mario.move_dir = key_pressed[37] ? 0 : 1; // choose direction
+/*for future use*/// if (!mario.jumping || ((mario.mspeed.x <= 1) ||(mario.mspeed.x >= -1))) mario.mspeed.x = mario.mspeed.x + 0.1 * mario.move_dir;
 					mario.blendMove = false; // dafaq dzkb?
 				}
 			}else{
