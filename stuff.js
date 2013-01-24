@@ -1,3 +1,5 @@
+// TODO: var of ground lvl and bool to indicate when he is standing on ground
+
 $(document).ready(function() {
 
 	// Canvas stuff
@@ -16,7 +18,7 @@ $(document).ready(function() {
 	// variables
 	var w_inside = w - 2*BLOCK_SIZE;
 	var h_inside = h - 2*BLOCK_SIZE;
-
+	var FPS = 30; //fps has affect to jump max height 
 	// Mario's data
 	var mario = {
 		// vars
@@ -26,6 +28,8 @@ $(document).ready(function() {
 		moving: false,
 		blendMove: false,
 		jumping: false,
+                jumpPos: 0.0, // arg for cosinus (for smooth jumpin) 
+	
 		mspeed: {
 			x: 0,
 			y: 0
@@ -33,8 +37,16 @@ $(document).ready(function() {
 		// functions
 		process: function(){
 			// do the controls
+			if ( key_pressed[32] && mario.y > h - 100 )
+			{  // when you press spacebar xD
+				 mario.jumping = true;
+				 mario.jumpPos = 0.0;
+				
+			}
+
 			if ( key_pressed[37] || key_pressed[39] ) { // if pressed left key or right key
-				if (! mario.jumping) { // check if mario is jumping/falling
+			//	if (! mario.jumping)
+				 { // check if mario is jumping/falling
 					mario.moving = true; // move mario
 					if ((key_pressed[37] && key_pressed[39])) return; // if pressing both keys, stahp
 					mario.move_dir = key_pressed[37] ? 0 : 1; // choose direction
@@ -44,13 +56,29 @@ $(document).ready(function() {
 			}else{
 				mario.moving = false; // stop mario
 				mario.blendMove = false; // dafaq dzkb?
+				
+  			
 			}
 
+			if (mario.jumping)
+			{ // when mario is flyin
+			  // version 0.1 some buges 
+			       	
+				
+ 			        mario.jumpPos += 2.0/FPS;  // 1.0 per second 
+				mario.y -= Math.cos(mario.jumpPos) * 8; // this kind of magic 
+
+				if( mario.jumpPos > Math.PI || mario.y > h - 100 )
+					mario.jumping = false;
+					
+				
+			}
+		
 			// process mario
 			if (mario.moving) {
 				var i = !mario.move_dir ? -2 : 2 ; // choose where to go (left or right) |  !mario.move_dir  <=>  mario.move_dir == 0
 				if( (mario.x + i >= BLOCK_SIZE) && (mario.x + i <= w-2*BLOCK_SIZE) ) // check if moved mario will not interfere with walls
-					mario.x += i; // Everything okay -> move mario on screen
+					mario.x += i * 3; // Everything okay -> move mario on screen
 			}
 		}
 	};
@@ -60,7 +88,7 @@ $(document).ready(function() {
 		ctx.fillRect(0,0,w,h);
 
 		if(typeof game_loop != "undefined") clearInterval(game_loop);
-		game_loop = setInterval(process, 30); // I have no idea what I'm doing...
+		game_loop = setInterval(process, 1000 / FPS); // I have no idea what I'm doing...
 	}
 
 	function process(){ // Logical operations begin here.
@@ -104,7 +132,7 @@ $(document).ready(function() {
 	var key_pressed = {};
 	window.addEventListener('keydown', function (evt) { key_pressed[evt.keyCode]=true; }, true);
 	window.addEventListener('keyup', function (evt) { key_pressed[evt.keyCode]=false; }, true);
-
+      
 	// Now run
 	init();
 });
