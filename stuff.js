@@ -23,7 +23,7 @@ $(document).ready(function() {
 		x: BLOCK_SIZE,
 		y: h-3*BLOCK_SIZE,
 		move_dir: -1, // -1=left, 1=right
-		moving: false,
+		walking: false, // walking = user is holding left or right key
 		blendMove: false,
 		jumping: false,
 		mspeed: {
@@ -35,23 +35,23 @@ $(document).ready(function() {
 			// do the controls
 			if ( key_pressed[37] || key_pressed[39] ) { // if pressed left key or right key
 				if (! mario.jumping) { // check if mario is jumping/falling
-					mario.moving = true; // move mario
-					if ((key_pressed[37] && key_pressed[39])) return; // if pressing both keys, stahp
+					mario.walking = true; // move mario
+					if ((key_pressed[37] && key_pressed[39])) {
+						return; // if pressing both keys, stahp
+					}
 					mario.move_dir = key_pressed[37] ? 0 : 1; // choose direction
-/*for future use*/// if (!mario.jumping || ((mario.mspeed.x <= 1) ||(mario.mspeed.x >= -1))) mario.mspeed.x = mario.mspeed.x + 0.1 * mario.move_dir;
-					mario.blendMove = false; // dafaq dzkb?
 				}
 			}else{
-				mario.moving = false; // stop mario
-				mario.blendMove = false; // dafaq dzkb?
+				mario.walking = false; // stop mario
 			}
 
-			// process mario
-			if (mario.moving) {
-				var i = !mario.move_dir ? -2 : 2 ; // choose where to go (left or right) |  !mario.move_dir  <=>  mario.move_dir == 0
+			// process mario's moves
+				if (mario.mspeed.x < 0) { mario.mspeed.x=0; return; } 
+				if (mario.mspeed.x <= 4 && mario.walking) mario.mspeed.x += 0.4; // If player's pressing the key and Mario's speed is low, accelerate
+				if (!mario.walking && mario.mspeed.x > 0) mario.mspeed.x -= 0.4; // If player's not pressing the key and Mario is moving, decelerate
+				var i = !mario.move_dir ? -mario.mspeed.x : mario.mspeed.x ; // choose where to go (left or right) |  !mario.move_dir  <=>  mario.move_dir == 0
 				if( (mario.x + i >= BLOCK_SIZE) && (mario.x + i <= w-2*BLOCK_SIZE) ) // check if moved mario will not interfere with walls
 					mario.x += i; // Everything okay -> move mario on screen
-			}
 		}
 	};
 
