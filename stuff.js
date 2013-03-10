@@ -22,7 +22,7 @@ $(document).ready(function() {
 		// vars
 		x: BLOCK_SIZE,
 		y: h-3*BLOCK_SIZE,
-		move_dir: -1, // -1=left, 1=right
+		move_dir: 0, // 0=left, 1=right
 		walking: false, // walking = user is holding left or right key
 		blendMove: false,
 		jumping: false,
@@ -35,14 +35,16 @@ $(document).ready(function() {
 			// do the controls
 			if ( key_pressed[37] || key_pressed[39] ) { // if pressed left key or right key
 				if (! mario.jumping) { // check if mario is jumping/falling
-					mario.walking = true; // move mario
+					 // move mario
 					if ((key_pressed[37] && key_pressed[39])) {
-						return; // if pressing both keys, stahp
+						mario.walking = false;	//if pressing both keys, stahp
+					}else{
+						mario.move_dir = key_pressed[37] ? 0 : 1; // choose direction
+						mario.walking = true;
 					}
-					mario.move_dir = key_pressed[37] ? 0 : 1; // choose direction
 				}
 			}else{
-				mario.walking = false; // stop mario
+				mario.walking = false; // keys ain't pressed
 			}
 
 			// process mario's moves
